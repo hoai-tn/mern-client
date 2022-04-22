@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, CircularProgress } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Post from "./post/Post";
 import useStyles from "./styles";
+import { getPosts } from "../../store/actions/posts";
 const Posts = () => {
-  const posts = useSelector((state) => state.posts);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.posts.posts);
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+
   return !posts.length ? (
     <CircularProgress aria-busy={true} />
   ) : (

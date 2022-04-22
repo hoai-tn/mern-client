@@ -1,11 +1,33 @@
-const posts = (posts = [], action) => {
+const initialState = {
+  posts: [],
+  postForm: {}
+};
+const posts = (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_ALL":
-      return action.payload;
+      return { ...state, posts: action.payload };
     case "CREATE":
-      return [...posts, action.payload];
+      return { ...state, posts: [...state.posts, action.payload] };
+    case "SET_POST":
+      return { ...state, postForm: action.payload };
+    case "MODIFY":
+    case "LIKE":
+      return {
+        ...state,
+        posts: [
+          ...state.posts.map((post) =>
+            post._id === action.payload._id ? action.payload : post
+          )
+        ]
+      };
+    case "DELETE":
+      return {
+        ...state,
+        posts: [...state.posts.filter((post) => post._id !== action.payload)]
+      };
+
     default:
-      return posts;
+      return state;
   }
 };
 export default posts;
