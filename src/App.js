@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { AppBar, Container, Grid, Grow, Typography } from "@material-ui/core";
+import React from "react";
+import { Container } from "@material-ui/core";
 import "./App.css";
-import useStyles from "./styles";
-import memories from "./assets/images/memories.png";
-import Form from "./components/Form/Form";
-import Posts from "./components/Posts/Posts";
-function App() {
-  const classes = useStyles();
+import Navbar from "./components/Navbar/Navbar";
 
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Auth from "./components/Auth/Auth";
+import Home from "./components/Home/Home";
+function App() {
+  const user = JSON.parse(localStorage.getItem("profile"));
   return (
-    <Container maxWidth="lg">
-      <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography className={classes.heading} variant="h2" align="center">
-          Memories
-        </Typography>
-        <img
-          className={classes.image}
-          src={memories}
-          alt="memories"
-          height="60"
-        />
-      </AppBar>
-      <Grow in>
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="stretch"
-          spacing={4}
-        >
-          <Grid item xs={12} sm={7}>
-            <Posts />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Form />
-          </Grid>
-        </Grid>
-      </Grow>
-    </Container>
+    <BrowserRouter>
+      <Container maxWidth="lg">
+        <Navbar />
+        <Switch>
+          <Route path="/" exact component={() => <Redirect to="/posts" />} />
+          <Route path="/posts" exact component={Home} />
+          <Route path="/posts/search" exact component={Home} />
+          {/* <Route path="/posts/:id" exact component={PostDetails} /> */}
+          {/* <Route path={['/creators/:name', '/tags/:name']} component={CreatorOrTag} /> */}
+          <Route
+            path="/auth"
+            exact
+            component={() => (!user ? <Auth /> : <Redirect to="/posts" />)}
+          />
+        </Switch>
+      </Container>
+    </BrowserRouter>
   );
 }
 

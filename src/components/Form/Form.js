@@ -10,7 +10,7 @@ const Form = ({ currentId, setCurrentId }) => {
     title: "",
     message: "",
     tags: "",
-    selectedFile: ""
+    selectedFile: "",
   });
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Form = ({ currentId, setCurrentId }) => {
     if (Object.keys(formPost).length)
       setPostData({
         ...formPost,
-        tags: formPost.tags.join()
+        tags: formPost.tags.join(), 
       });
   }, [formPost]);
   const handleSubmit = (e) => {
@@ -29,7 +29,7 @@ const Form = ({ currentId, setCurrentId }) => {
     if (postData._id) {
       dispatch(modifyPost(formatPost));
     } else {
-      dispatch(createPost(formPost));
+      dispatch(createPost(formatPost));
     }
   };
   const clear = () => {
@@ -39,7 +39,7 @@ const Form = ({ currentId, setCurrentId }) => {
       title: "",
       message: "",
       tags: "",
-      selectedFile: ""
+      selectedFile: "",
     });
   };
   return (
