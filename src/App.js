@@ -3,7 +3,7 @@ import { Container } from "@material-ui/core";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch , Route, Redirect } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import Home from "./components/Home/Home";
 function App() {
