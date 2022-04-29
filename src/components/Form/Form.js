@@ -6,42 +6,51 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost, modifyPost } from "../../store/actions/posts";
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
-    selectedFile: "",
+    selectedFile: ""
   });
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const user = JSON.parse(localStorage.getItem("profile"));
   const formPost = useSelector((state) => state.posts.postForm);
   useEffect(() => {
     if (Object.keys(formPost).length)
       setPostData({
         ...formPost,
-        tags: formPost.tags.join(), 
+        tags: formPost.tags.join()
       });
   }, [formPost]);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formatPost = { ...postData, tags: postData.tags.split(",") };
     if (postData._id) {
-      dispatch(modifyPost(formatPost));
+      dispatch(modifyPost({ ...formatPost, name: user?.result?.name }));
     } else {
-      dispatch(createPost(formatPost));
+      dispatch(createPost({ ...formatPost, name: user?.result?.name }));
     }
+    // clear();
   };
   const clear = () => {
     setPostData({
       _id: "",
-      creator: "",
       title: "",
       message: "",
       tags: "",
-      selectedFile: "",
+      selectedFile: ""
     });
   };
+
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and like other's memories.
+        </Typography>
+      </Paper>
+    );
+  }
   return (
     <Paper className={classes.paper}>
       <form
@@ -54,17 +63,6 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {postData._id ? "Modify" : "Create"} a Memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          value={postData.creator}
-          fullWidth
-          margin="dense"
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
         <TextField
           name="title"
           variant="outlined"

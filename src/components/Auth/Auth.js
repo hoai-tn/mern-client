@@ -5,7 +5,7 @@ import {
   Paper,
   Grid,
   Typography,
-  Container,
+  Container
 } from "@material-ui/core";
 import useStyles from "./styles";
 import { LockOpenOutlined } from "@material-ui/icons";
@@ -14,13 +14,14 @@ import { useDispatch } from "react-redux";
 import { GoogleLogin } from "react-google-login";
 import { useHistory } from "react-router-dom";
 import { AUTH } from "../../contants/actionTypes";
+import { signIn, signUp } from "../../store/actions/auth";
 
 const initialState = {
   firstName: "",
   lastName: "",
   email: "",
   password: "",
-  confirmPassword: "",
+  confirmPassword: ""
 };
 const Icon = () => (
   <svg style={{ width: "20px", height: "20px" }} viewBox="0 0 24 24">
@@ -44,6 +45,11 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSignUp) {
+      dispatch(signUp(form, history));
+    } else {
+      dispatch(signIn(form, history));
+    }
   };
   const switchMode = () => setIsSignUp((prevIsSignUp) => !prevIsSignUp);
   const googleSuccess = (res) => {
